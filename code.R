@@ -198,5 +198,6 @@ for (i in 1:10) {
 ## Changer le nom de colonnes selon un autre tableau
 names(df) <- name$NomComplet[match(names(df), name$Short)]
 
-
+## Changer le nombre de caractères tronqués dans la console.
+glue_collapse(DF$LongString, width = 1000)
 
