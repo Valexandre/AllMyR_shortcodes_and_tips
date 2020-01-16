@@ -287,3 +287,25 @@ anim_save(filename = "Animation_Front-Altair.gif",
           animation=animate(animfront, fps=10, 
                             duration=10,width=800,
                             height=800))
+############
+
+TouteAnimIDF<-MEGADF%>%filter(substr(code_post,1,2)%in%c(75,77,78,91:95))%>%
+  ggplot()+
+  #geom_sf(data=France,colour="black",fill="white",alpha=0.4)+
+  geom_sf(data=ContoursDep%>%filter(code%in%c(75,77,78,91:95)),colour="gray",fill=NA,alpha=0.4)+
+  geom_point(aes(longitude,latitude,size=TotalCumParHab, group=seq_along(ordre)),colour="#0F82BE",alpha=0.6)+
+  labs(caption="Source : Change.org  
+Carte : Le Parisien Data  ")+
+  theme_void()+
+  theme(text=element_text(family="Graphik", size=16),
+        legend.position="none")+
+  coord_sf(datum=NA)+
+  transition_states(
+    ordre,
+    transition_length = 1,
+    state_length = 1
+  ) +
+  labs(title = '{closest_state}') +
+  ease_aes('linear')+shadow_mark(past = T)
+
+
