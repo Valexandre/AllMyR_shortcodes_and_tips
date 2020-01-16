@@ -152,6 +152,15 @@ mutate(nouvelleentite = forcats::fct_reorder(nouvelleentite,n))
 ## Reshape
 aql <- reshape2::melt(airquality, id.vars = c("month", "day"),   variable.name = "climate_variable",    value.name = "climate_value") 
 
+## Etat 4001
+
+purrr::map_df(readxl::excel_sheets("./tableaux-4001-ts.xlsx"),function(x){
+  readxl::read_excel("./tableaux-4001-ts.xlsx",sheet = x) %>%
+    pivot_longer(-c("Index","libellé index"),names_to = "date",values_to = "valeur") %>%
+    separate(date,c("annee","mois"),sep = "_") %>%
+    add_column(dpt = x)
+})
+
 ## taux devol
 evol <- function(x) {(last(x) - first(x)) / first(x) * 100 }
 Pourevolution%>%
