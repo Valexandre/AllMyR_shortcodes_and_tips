@@ -233,4 +233,57 @@ for (i in listJours){
   dev.off()
 }
 
+#################
+#création gif
 
+library(readr)
+frontaltair <- read_delim("repo_projetsR/scripts_r/frontaltair.csv", 
+                            ";", escape_double = FALSE, col_types = cols(Date = col_character()), 
+                            trim_ws = TRUE)
+
+library(tidyverse)
+library(gganimate)
+library(rnaturalearth)
+
+sp::plot(ne_coastline(scale = "large"))
+
+Cotes <- ne_coastline(scale = 'large', returnclass = 'sf')
+Cotes<-st_transform(Cotes, crs=4326)
+Cotes2<-st_crop(Cotes,xmin=55,ymin=24,
+                xmax=59,ymax=27)
+
+DateAnim<-data_frame(Date=rep("2019-06-12",3*60),
+           Hr=c(rep(21,60),rep(22,60),rep(23,60)),
+                "Min"=c(rep(0:59,3)))
+
+library(lubridate)
+
+frontaltair$Time<-as.POSIXct(paste0(frontaltair$Date, " ",
+                                    frontaltair$Hr, ":",
+                                    frontaltair$Min, ":00"))
+
+
+frontaltair%>%
+  ggplot()+
+  geom_point(aes(Lon,Lat))+
+  geom_sf(data=Cotes2,colour="#0F82BE")+theme_void()+
+  coord_sf(datum=NA)+
+  transition_reveal(Time)+
+  shadow_mark(alpha = 0.2)+
+  ease_aes('linear')+shadow_wake(wake_length = 0.1, alpha = FALSE)+
+  labs(title =  paste0(frontaltair$Date, " ", frontaltair$Hr,"h", frontaltair$Min))
+  
+
+animfront<-frontaltair%>%
+  ggplot()+
+  geom_point(aes(Lon,Lat), size=6, alpha=0.8, colour="#0F82BE")+
+  geom_sf(data=Cotes2,colour="#0F82BE")+theme_void()+
+  coord_sf(datum=NA)+
+  transition_time(Time)+
+  shadow_mark(alpha = 0.2)+
+  ease_aes('linear')+shadow_wake(wake_length = 0.1, alpha = FALSE)+
+  labs(title =  'Position du Front Altair {frame_time}')
+anim_save(filename = "Animation_Front-Altair.gif",
+          animation=animate(animfront, fps=10, 
+                            duration=10,width=800,
+                            height=800))
