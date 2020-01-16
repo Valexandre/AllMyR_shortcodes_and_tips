@@ -143,14 +143,14 @@ mtcars %>%
 
 ## Si plusieurs éléments par ligne, pour spliter, compter et trier par nombre
 data%>%
-mutate(nouvelleentite=str_split(entiteavecvirgule;","))%>%
+mutate(nouvelleentite=str_split(entiteavecvirgule,","))%>%
 select(nouvelleentite)%>%
 unnest()%>%
 count(nouvelleentite)%>%
 mutate(nouvelleentite = forcats::fct_reorder(nouvelleentite,n))
                   
 ## Reshape
-aql <- melsvg t(airquality, id.vars = c("month", "day"),   variable.name = "climate_variable",    value.name = "climate_value") 
+aql <- reshape2::melt(airquality, id.vars = c("month", "day"),   variable.name = "climate_variable",    value.name = "climate_value") 
 
 ## taux devol
 evol <- function(x) {(last(x) - first(x)) / first(x) * 100 }
