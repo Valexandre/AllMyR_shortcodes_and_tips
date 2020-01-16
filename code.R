@@ -330,3 +330,27 @@ rpps %>%
   summarize(somme = sum(nombre,na.rm=TRUE)) %>%
   pivot_wider(names_from = categorie,values_from = somme) %>%
   mutate(taux = plus55 / ensemble * 100)
+
+rpps %>%
+  filter(!is.na(code)) %>% 
+  inner_join(.,cat_age) %>% 
+  group_by(code,annee,territoire,categorie) %>% 
+  filter(specialite == "Médecine générale") %>%
+  filter(categorie != "autres") %>% 
+  summarize(somme = sum(nombre,na.rm=TRUE)) %>% 
+  pivot_wider(names_from = categorie,values_from = somme) %>% 
+  mutate(taux = plus55 / ensemble) %>%
+  select(-plus55,-ensemble) %>%
+  pivot_wider(names_from = annee,values_from = taux) %>%
+  arrange(desc(`2018`)) %>% 
+  head(9) %>%
+  pivot_longer(-c(code,territoire),names_to = "annee",values_to = "taux") %T>% print() %>%
+  ungroup() %>%
+  mutate_at(vars(territoire), funs(factor(., levels=unique(.)))) %>%
+  ggplot(aes(x=annee,y=taux)) + 
+    facet_wrap(~territoire,ncol=3) + 
+    geom_col(fill="#82f5cf") + labs(x="",y="") + 
+    geom_text(aes(label = ifelse(annee=="2018"|annee=="2013",paste(floor(taux*100),"%",sep=""),NA)),vjust=1.5,size=4) +
+    scale_y_continuous(labels = percent_format(accuracy = 1)) +
+    theme_minimal() + 
+    theme(legend.position = "none",text = element_text(family = "Roboto", color = "black",size=12))
