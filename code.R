@@ -210,3 +210,27 @@ names(df) <- name$NomComplet[match(names(df), name$Short)]
 ## Changer le nombre de caractères tronqués dans la console.
 glue_collapse(DF$LongString, width = 1000)
 
+## sortr un svg pa jour
+for (i in listJours){
+  print(i)
+  tmp<-i
+  svglite::svglite(file = paste0("Australie",tmp,".svg"),width = 10,height=8,standalone = T)
+  plot(DonneesInfog%>%
+         filter(ACQ_DATE==tmp)%>%
+         mutate(centre=st_centroid(geometry),
+                latitude=st_x(centre),
+                longitude=st_y(centre))%>%
+         ggplot()+
+         labs(title=tmp,
+              subtitle=paste0("Départs de feux : ",
+                              DenombrementParJour$DepartsDeFeux[DenombrementParJour$ACQ_DATE==tmp]))+
+         geom_sf(data=AUSTRALIA_sf,colour="gray",alpha=0.2,fill=NA)+
+         geom_hex(aes(x=longitude,y=latitude),binwidth = c(.2, .2), alpha=0.7) +
+         scale_fill_gradientn("Densité",colours =  myPalette(5), limits=c(0,1500)
+         )+
+         coord_sf(datum=NA)+
+         theme_void())
+  dev.off()
+}
+
+
