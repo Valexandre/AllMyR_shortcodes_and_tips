@@ -308,4 +308,16 @@ Carte : Le Parisien Data  ")+
   labs(title = '{closest_state}') +
   ease_aes('linear')+shadow_mark(past = T)
 
+### MAP + files
 
+add_rrps<-function(name) {
+  rpps<-read.csv(name,skip=4)
+  rpps<-rpps[-1,]
+  annee<-paste("20",substr(name,nchar(name)-5,nchar(name)-4),sep="")
+  rpps<-rpps %>% tidyr::pivot_longer(-c(X,AGE)) %>% rename(territoire = X,specialite = AGE,tranche = name,nombre = value) %>% separate(territoire,c("code","territoire"),"(?<=([0-9]|2A|2B)) - (?=[A-Z])",extra = "merge",fill = "left") %>% mutate(annee = annee)
+  rpps$nombre<-as.numeric(rpps$nombre)
+  rpps
+}
+
+rpps<-c("rpps-medecins13.csv","rpps-medecins14.csv","rpps-medecins15.csv","rpps-medecins16.csv","rpps-medecins17.csv","rpps-medecins18.csv") %>%
+  map_dfr(add_rrps)
