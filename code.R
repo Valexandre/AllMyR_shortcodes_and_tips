@@ -321,3 +321,12 @@ add_rrps<-function(name) {
 
 rpps<-c("rpps-medecins13.csv","rpps-medecins14.csv","rpps-medecins15.csv","rpps-medecins16.csv","rpps-medecins17.csv","rpps-medecins18.csv") %>%
   map_dfr(add_rrps)
+
+rpps %>%
+  filter(territoire == "FRANCE ENTIERE") %>%
+  inner_join(.,cat_age) %>%
+  group_by(annee,categorie) %>%
+  filter(specialite == "Ensemble des spécialités d'exercice") %>%
+  summarize(somme = sum(nombre,na.rm=TRUE)) %>%
+  pivot_wider(names_from = categorie,values_from = somme) %>%
+  mutate(taux = plus55 / ensemble * 100)
