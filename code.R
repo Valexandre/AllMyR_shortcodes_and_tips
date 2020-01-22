@@ -27,6 +27,8 @@ extract_columns <- function(data) {
 extract_columns(jeudedonneesaveclescolonnescoucouetbonjouretautrechose)
 extract_columns(df)
 
+# Split et prendre le premier mot d'une variable
+Donnees$Marque<-vapply(strsplit(Donnees$`Marque Modele`,"-"), `[`, 1, FUN.VALUE=character(1))
 
 # Côté cartographie
 
