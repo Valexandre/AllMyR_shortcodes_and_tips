@@ -29,6 +29,7 @@ extract_columns(df)
 
 # Split et prendre le premier mot d'une variable
 Donnees$Marque<-vapply(strsplit(Donnees$`Marque Modele`,"-"), `[`, 1, FUN.VALUE=character(1))
+amendements$TitrePrenomNomTmp2<-sapply(strsplit(amendements$TitrePrenomNomTmp," et "), `[`, 1)
 
 # Côté cartographie
 
