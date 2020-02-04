@@ -179,6 +179,7 @@ data.frame(matrix(NA, nrow = 2, ncol = 3))
 
 ## Not in
 `%!in%` = function(x,y) !(x %in% y)
+Majuscule = function(x) (paste0(toupper(substr(x, 1, 1)), substr(x, 2, nchar(x))))
          
 ## Transformer les facteurs en caractères
 mutate_if(is.factor, as.character)
