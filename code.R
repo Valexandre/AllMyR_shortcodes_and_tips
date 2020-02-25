@@ -135,6 +135,15 @@ Data%>%
 na_if("")%>%
 count(Variable)
 
+## Créer un json
+jsoncars<-TextesPremierEtSecondTour%>%jsonlite::toJSON(pretty = TRUE)
+fileConn<-file("T1T2MUN2014-VillesPlus1000hab.json")
+writeLines(jsoncars,fileConn)
+close(fileConn)
+fileConn<-file("T1T2MUN2014-VillesPlus1000hab.txt")
+writeLines(jsoncars,fileConn)
+close(fileConn)
+
 ## Examiner les colonnes numériques
 data%>%
 select_if(is.numeric)%>%
