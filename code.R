@@ -72,6 +72,14 @@ polys_sf%>%ggplot()+geom_sf(colour="red")
   
 # Côté graphiques
 
+#Fonction jpeg
+sortunjpeg<-function(x,y,z){
+  time<-str_c(unlist(str_extract_all(Sys.time(),"[:alnum:]")),collapse="")
+  jpeg(filename = paste0(time,".jpg"), width=y, height = z, quality=100, units = "px",type="cairo")
+  plot(x)
+  dev.off()
+}
+
 ## Reorder ggplot bar
 group_by(Pays)%>%
   mutate(TotalVente=sum(KgParMillionDHectares,na.rm=T))%>%
