@@ -80,6 +80,10 @@ sortunjpeg<-function(x,y,z){
   dev.off()
 }
 
+devoutsvg::svgout(filename = "Titre.svg", width=10, height = 10)
+Graph
+invisible(dev.off())
+
 ## Reorder ggplot bar
 group_by(Pays)%>%
   mutate(TotalVente=sum(KgParMillionDHectares,na.rm=T))%>%
