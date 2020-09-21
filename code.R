@@ -27,6 +27,9 @@ extract_columns <- function(data) {
 extract_columns(jeudedonneesaveclescolonnescoucouetbonjouretautrechose)
 extract_columns(df)
 
+## Modifier une chaine de caractère peu import où elle est
+DF%>%mutate_all(funs(str_replace(., "\\{DansDep\\}", DansDep)))
+
 # Split et prendre le premier mot d'une variable
 Donnees$Marque<-vapply(strsplit(Donnees$`Marque Modele`,"-"), `[`, 1, FUN.VALUE=character(1))
 amendements$TitrePrenomNomTmp2<-sapply(strsplit(amendements$TitrePrenomNomTmp," et "), `[`, 1)
