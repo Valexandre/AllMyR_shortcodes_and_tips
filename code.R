@@ -52,6 +52,7 @@ SF%>%mutate(centre=st_centroid(geometry),
 
 ## Cropping on Mapshaper
 mapshaper -clip bbox=1.4473,48.1205,3.5557,49.2374 
+mapshaper -clip bbox=583350,6770000,744555,6957000
 
 ## Ne garder que l'exlusion entre deux polygones
 CommunessansParcs<-st_difference(Communes,st_union(PasParis))
