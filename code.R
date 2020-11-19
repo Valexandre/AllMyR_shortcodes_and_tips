@@ -1,3 +1,11 @@
+#Ajouter les éléments pour la charte
+ labs(title=str_wrap("Nombre de patients hospitalisés pour 100 000 habitants",50),
+  caption=c("Source : CovidTracking.com","LP/DATA"))+
+    theme_LP_1200()+theme(axis.text.x = element_blank(),
+                          axis.text.y = element_blank(),
+                         plot.caption = element_text(hjust=c(0, 1)))+ 
+    inset_element(on_top = F,logo, 0.9, 0.9, 1, 1, align_to = 'full')
+
 # Sélectionner plusieurs éléments
 
 ## Joindre des dataframes qui commencent par df
