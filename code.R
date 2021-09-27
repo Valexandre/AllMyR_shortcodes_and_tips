@@ -254,7 +254,10 @@ for (i in 1:10) {
   }, error=function(e){})
 }
 
+# Remplacer les lettres en majuscules par une valeur en nom propre
+mutate(nouveau=str_replace(ancien,"([[:upper:]]){2,}",str_to_title))
      
+
 ## Changer le nom de colonnes selon un autre tableau
 names(df) <- name$NomComplet[match(names(df), name$Short)]
 
