@@ -257,6 +257,9 @@ for (i in 1:10) {
 # Remplacer les lettres en majuscules par une valeur en nom propre
 mutate(nouveau=str_replace(ancien,"([[:upper:]]){2,}",str_to_title))
      
+# extraire les noms en majuscules meême si plusieurs
+ResultatsRegT1G%>%rowwise()%>%mutate(nom_candidat=str_c(unlist(str_extract_all(nom,pattern = "[[:upper:]]{2,}")),collapse=" "))
+
 
 ## Changer le nom de colonnes selon un autre tableau
 names(df) <- name$NomComplet[match(names(df), name$Short)]
