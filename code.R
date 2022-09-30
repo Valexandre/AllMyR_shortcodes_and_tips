@@ -411,3 +411,24 @@ rpps %>%
     scale_y_continuous(labels = percent_format(accuracy = 1)) +
     theme_minimal() + 
     theme(legend.position = "none",text = element_text(family = "Roboto", color = "black",size=12))
+
+
+#### isochrones ign
+points <- list("1.46405,43.58329", "1.48,43.57")
+
+
+response <- purrr::map_dfr(points, ~GET("https://wxs.ign.fr/calcul/isochrone/isochrone.json",
+                                        query = list(
+                                          location=.x,
+                                          method="Time",
+                                          graphName="Pieton",
+                                          exclusions="",
+                                          time=600,
+                                          holes="false",
+                                          smoothing="true")) %>%
+                             content(as = "text", encoding = "UTF-8") %>%
+                             fromJSON() %>%
+                             unlist() %>%
+                             tibble::enframe() %>%
+                             tidyr::pivot_wider() %>%
+                             sf::st_as_sf(wkt = "wktGeometry", crs = 4326))
