@@ -6,6 +6,9 @@
                          plot.caption = element_text(hjust=c(0, 1)))+ 
     inset_element(on_top = F,logo, 0.9, 0.9, 1, 1, align_to = 'full')
 
+CreeMoiUnGradient <- colorRampPalette(c("#CC2828", "white"))
+CouleursBornes<-rev(CreeMoiUnGradient(NbBornes)[1:5])
+
 # Sélectionner plusieurs éléments
 
 ## Joindre des dataframes qui commencent par df
