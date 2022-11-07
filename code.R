@@ -9,6 +9,14 @@
 CreeMoiUnGradient <- colorRampPalette(c("#CC2828", "white"))
 CouleursBornes<-rev(CreeMoiUnGradient(NbBornes)[1:5])
 
+
+NombreCouleurs<-function(couldep,coularr,nombre){
+  
+  CreeMoiUnGradient <- colorRampPalette(c(couldep, coularr))
+  CreeMoiUnGradient(nombre)
+}
+
+
 # Sélectionner plusieurs éléments
 
 ## Joindre des dataframes qui commencent par df
