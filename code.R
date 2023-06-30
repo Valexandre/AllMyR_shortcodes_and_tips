@@ -443,3 +443,34 @@ response <- purrr::map_dfr(points, ~GET("https://wxs.ign.fr/calcul/isochrone/iso
                              tibble::enframe() %>%
                              tidyr::pivot_wider() %>%
                              sf::st_as_sf(wkt = "wktGeometry", crs = 4326))
+
+
+###########
+# netcdf
+nc<-nc_open(ncfname)
+
+#  Get the variable values
+rr_values <- ncvar_get(nc, "rr")
+lat_values <- ncvar_get(nc, "latitude")
+lon_values <- ncvar_get(nc, "longitude")
+time_values <- ncvar_get(nc, "time")
+
+# Convert time values to Date format
+time_values <- as.Date(time_values, origin = "1950-01-01")
+
+# Define the indices for the desired latitudes, longitudes, and time range
+lat_indices <- which(lat_values >= 40 & lat_values <= 55)
+lon_indices <- which(lon_values >= -10 & lon_values <= 12)
+time_indices <- which(time_values >= as.Date("2019-01-01"))
+
+# Subset the variable values based on the indices
+lat_subset <- lat_values[lat_indices]
+lon_subset <- lon_values[lon_indices]
+time_subset <- time_values[time_indices]
+rr_subset <- rr_values[ lon_indices, lat_indices,time_indices]
+
+# Create a dataframe with the subsetted values
+df <- expand.grid(latitude = lat_subset,
+                  longitude = lon_subset,
+                  time = time_subset)
+df$rr <- as.vector(rr_subset)
