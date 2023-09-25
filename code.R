@@ -278,6 +278,22 @@ names(df) <- name$NomComplet[match(names(df), name$Short)]
 ## Changer le nombre de caractères tronqués dans la console.
 glue_collapse(DF$LongString, width = 1000)
 
+for (i in 1:nrow(FiltresCommunesCentre)){
+  FiltresCommunesCentre$distancemin_a_20k[i]<-as.numeric(st_distance(FiltresCommunesCentre[i,],CommunesP20K_U))
+  # Print a dot at every iteration
+  cat(".")
+  
+  # Check if the iteration number is divisible by 100
+  if (i %% 100 == 0) {
+    cat(" Iteration ", i)
+    # Print a newline character at the end to separate the dots from further output
+cat("\n")
+  }
+
+}
+
+
+
 ## sortr un svg pa jour
 for (i in listJours){
   print(i)
