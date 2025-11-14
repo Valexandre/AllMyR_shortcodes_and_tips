@@ -440,6 +440,29 @@ rpps %>%
     theme(legend.position = "none",text = element_text(family = "Roboto", color = "black",size=12))
 
 
+# télécharger des csv.gz
+
+# Liste des URLs
+urls <- c(
+  "https://exemple.com/fichier1.csv.gz",
+  "https://exemple.com/fichier2.csv.gz",
+  "https://exemple.com/fichier3.csv.gz"
+)
+
+# Fonction pour télécharger et lire un fichier
+download_and_read <- function(url) {
+  temp_file <- tempfile(fileext = ".csv.gz")
+  download.file(url, temp_file, mode = "wb")
+  df <- read_csv(temp_file)
+  unlink(temp_file)
+  return(df)
+}
+
+# Télécharger et combiner tous les fichiers
+df_final <- urls %>%
+  map_dfr(download_and_read)
+
+
 #### isochrones ign
 points <- list("1.46405,43.58329", "1.48,43.57")
 
