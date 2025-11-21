@@ -209,7 +209,16 @@ select(nouvelleentite)%>%
 unnest()%>%
 count(nouvelleentite)%>%
 mutate(nouvelleentite = forcats::fct_reorder(nouvelleentite,n))
-                  
+
+## multiplier le nombre de lignes
+# Créer le dataframe avec une ligne par page
+df_pages <- df %>%
+  rowwise() %>%
+  mutate(page = list(num_page_debut:num_page_fin)) %>%
+  unnest(page) %>%
+  select(marque, an, page, chapitre)
+
+
 ## Reshape
 aql <- reshape2::melt(airquality, id.vars = c("month", "day"),   variable.name = "climate_variable",    value.name = "climate_value") 
 
